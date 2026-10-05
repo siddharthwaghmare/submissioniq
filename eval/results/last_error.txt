@@ -1,0 +1,2 @@
+2026-10-05T08:46:00Z
+first three model calls failed, stopping: call failed: unexpected response: HTTP 200, text/plain, body starts 'OK\r\n'
