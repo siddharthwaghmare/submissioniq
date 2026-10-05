@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SubmissionIQ — AI Underwriting Submission Assistant</title>
+<meta name="description" content="An AI underwriting submission assistant that extracts data, flags gaps, checks appetite, and drafts the broker reply. A portfolio project by Siddharth Waghmare.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef0f3; --surface:#ffffff; --surface-2:#f7f8fa;
+  --ink:#172033; --muted:#5a6679; --faint:#8793a3;
+  --line:#e0e4ea; --line-strong:#cdd4de;
+  --accent:#0d6e6b; --accent-ink:#0a5452;
+  --good:#1c8a4e; --good-bg:#e6f4ec;
+  --warn:#9a6a12; --warn-bg:#f7eeda;
+  --bad:#bb3b3b; --bad-bg:#f7e5e5;
+  --shadow:0 1px 2px rgba(23,32,51,.06),0 6px 18px rgba(23,32,51,.06);
+  --font:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d131f; --surface:#141c2a; --surface-2:#1a2332;
+  --ink:#e9edf3; --muted:#9aa6b8; --faint:#6f7d91;
+  --line:#243043; --line-strong:#33425a;
+  --accent:#2bb6b1; --accent-ink:#55cfc9;
+  --good:#46c07e; --good-bg:#12331f;
+  --warn:#d9a940; --warn-bg:#35290f;
+  --bad:#e06a6a; --bad-bg:#371a1a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.35);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0d131f; --surface:#141c2a; --surface-2:#1a2332;
+  --ink:#e9edf3; --muted:#9aa6b8; --faint:#6f7d91;
+  --line:#243043; --line-strong:#33425a;
+  --accent:#2bb6b1; --accent-ink:#55cfc9;
+  --good:#46c07e; --good-bg:#12331f;
+  --warn:#d9a940; --warn-bg:#35290f;
+  --bad:#e06a6a; --bad-bg:#371a1a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+h1,h2,h3{text-wrap:balance;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:18px}
+button{font-family:inherit;cursor:pointer}
+
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:14px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:10px;min-width:0}
+.mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,var(--accent),var(--accent-ink));display:grid;place-items:center;flex:none;box-shadow:var(--shadow)}
+.mark svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:2.2}
+.brand b{font-weight:600;font-size:17px;letter-spacing:-.2px;display:block}
+.brand span{font-size:11.5px;color:var(--muted)}
+.spacer{flex:1}
+.tag{font-size:10.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));padding:3px 8px;border-radius:999px;white-space:nowrap}
+.tbtn{background:var(--surface-2);border:1px solid var(--line);color:var(--muted);width:34px;height:34px;border-radius:9px;display:grid;place-items:center}
+.tbtn svg{width:16px;height:16px;fill:currentColor}
+
+.intro{padding-block:20px 6px}
+.intro h1{font-size:clamp(21px,3.4vw,27px);letter-spacing:-.4px}
+.intro p{color:var(--muted);max-width:66ch;margin-top:8px;font-size:14.5px}
+.byline{margin-top:12px;font-size:12.5px;color:var(--faint)}
+.byline b{color:var(--muted);font-weight:600}
+
+.console{display:grid;grid-template-columns:minmax(0,0.92fr) minmax(0,1.08fr);gap:18px;padding-block:18px 10px;align-items:start}
+@media (max-width:860px){.console{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);min-width:0}
+.phead{display:flex;align-items:center;gap:9px;padding:13px 15px;border-bottom:1px solid var(--line)}
+.phead .k{font-size:11px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--faint)}
+.phead h2{font-size:14.5px;font-weight:600}
+.pbody{padding:15px}
+
+.tabs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.tab{font-size:12.5px;padding:6px 11px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);color:var(--muted)}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+textarea{width:100%;min-height:270px;resize:vertical;border:1px solid var(--line-strong);border-radius:10px;background:var(--surface-2);color:var(--ink);padding:12px;font-family:var(--mono);font-size:12.3px;line-height:1.55}
+textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.runrow{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
+.run{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px}
+.run:disabled{opacity:.55;cursor:default}
+.run svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2.2}
+.hint{font-size:12px;color:var(--faint)}
+
+.rules{margin-top:14px;border:1px dashed var(--line-strong);border-radius:10px;padding:11px 13px;background:var(--surface-2)}
+.rules .k{font-size:10.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:6px}
+.rules ul{margin:0;padding-left:16px;font-size:12px;color:var(--muted);display:grid;gap:3px}
+
+.rblock{padding:15px;border-bottom:1px solid var(--line)}
+.rblock:last-child{border-bottom:none}
+.rlabel{font-size:10.5px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--faint);margin-bottom:11px;display:flex;align-items:center;gap:7px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:9px 18px}
+@media (max-width:480px){.fields{grid-template-columns:1fr}}
+.field{min-width:0}
+.field .fk{font-size:11px;color:var(--muted);margin-bottom:1px}
+.field .fv{font-size:13.5px;font-weight:500;word-wrap:break-word}
+.field .fv.na{color:var(--warn);font-style:italic;font-weight:400}
+
+.verdict{display:flex;align-items:center;gap:11px;margin-bottom:12px;flex-wrap:wrap}
+.pill{font-size:13px;font-weight:700;padding:6px 14px;border-radius:999px;letter-spacing:.2px}
+.pill.good{background:var(--good-bg);color:var(--good)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+.pill.bad{background:var(--bad-bg);color:var(--bad)}
+.reasons{margin:0;padding-left:17px;display:grid;gap:5px;font-size:13px;color:var(--ink)}
+.reasons li::marker{color:var(--accent)}
+
+.flag{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.flag:last-child{border-bottom:none}
+.sev{flex:none;width:9px;height:9px;border-radius:3px;margin-top:5px}
+.sev.high{background:var(--bad)} .sev.medium{background:var(--warn)} .sev.low{background:var(--faint)}
+.flag .ft{font-size:13px}
+.flag .ft b{font-weight:600}
+.flag .fn{font-size:12.5px;color:var(--muted)}
+
+.email{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:12px}
+.email .subj{font-size:12.5px;color:var(--muted);margin-bottom:8px}
+.email .subj b{color:var(--ink)}
+.email pre{margin:0;white-space:pre-wrap;font-family:var(--font);font-size:13px;line-height:1.55}
+.copy{margin-top:10px;background:var(--surface);border:1px solid var(--line-strong);color:var(--muted);border-radius:8px;padding:6px 12px;font-size:12.5px;display:inline-flex;align-items:center;gap:6px}
+.copy svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2}
+
+.state{padding:40px 18px;text-align:center;color:var(--muted)}
+.spin{width:26px;height:26px;border:2.5px solid var(--line-strong);border-top-color:var(--accent);border-radius:50%;margin:0 auto 12px;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+.state .big{font-size:14px;color:var(--ink);font-weight:600;margin-bottom:4px}
+.state .step{font-family:var(--mono);font-size:12px;color:var(--accent);margin-top:6px;min-height:1.2em}
+
+.how{margin-block:22px 34px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+summary{list-style:none;cursor:pointer;padding:15px 18px;font-weight:600;font-size:14.5px;display:flex;align-items:center;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary .chev{margin-left:auto;transition:transform .2s;color:var(--faint)}
+details[open] summary .chev{transform:rotate(90deg)}
+.howbody{padding:4px 18px 20px;border-top:1px solid var(--line)}
+.howbody h3{font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--accent);margin-top:16px;margin-bottom:6px}
+.howbody p{font-size:13.5px;color:var(--ink);margin:0 0 6px;max-width:72ch}
+.howbody .muted{color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;font-family:var(--mono);font-size:11.5px}
+.flow span{background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:5px 9px;color:var(--muted)}
+.flow span.on{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+footer{color:var(--faint);font-size:12px;padding-block:8px 34px;text-align:center}
+footer a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line-strong)}
+footer a:hover{color:var(--accent)}
+.disc{font-size:11.5px;color:var(--faint);max-width:70ch;margin:14px auto 0;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hrow">
+    <div class="logo">
+      <div class="mark"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h7"/><circle cx="18" cy="16.5" r="3.2"/><path d="M20.4 18.9L22.5 21"/></svg></div>
+      <div class="brand"><b>SubmissionIQ</b><span>AI Underwriting Submission Assistant</span></div>
+    </div>
+    <div class="spacer"></div>
+    <span class="tag">Portfolio Demo</span>
+    <button class="tbtn" id="theme" aria-label="Toggle theme"><svg id="themeIcon" viewBox="0 0 24 24"></svg></button>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="intro">
+    <h1>Turn a messy broker submission into an underwriting decision in seconds.</h1>
+    <p>Commercial submission intake is one of the most manual steps in insurance — reading broker emails, ACORD forms and loss runs by hand. SubmissionIQ reads the submission, extracts the structured data, flags what's missing, checks it against underwriting appetite, and drafts the broker response.</p>
+    <p class="byline">A portfolio project by <b>Siddharth Waghmare</b> — business analyst, P&amp;C insurance technology. Built to show how a BA designs an AI workflow around a real underwriting process.</p>
+  </section>
+
+  <section class="console">
+    <div class="panel">
+      <div class="phead"><span class="k">Step 1</span><h2>Broker Submission</h2></div>
+      <div class="pbody">
+        <div class="tabs" id="tabs" role="tablist"></div>
+        <textarea id="intake" spellcheck="false" aria-label="Submission text"></textarea>
+        <div class="runrow">
+          <button class="run" id="run"><svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>Run AI Analysis</button>
+          <span class="hint" id="runhint"></span>
+        </div>
+        <div class="rules">
+          <span class="k">Underwriting appetite ruleset (the AI checks against this)</span>
+          <ul>
+            <li><b>Target:</b> restaurants, offices, light retail, artisan contractors, habitational &le; 50 units.</li>
+            <li><b>Decline:</b> cannabis, adult entertainment, heavy manufacturing, open/litigated claim, 3+ losses in 3 yrs, or any single loss &gt; $100k.</li>
+            <li><b>Refer:</b> property TIV &gt; $10M, &lt; 2 yrs in business, 2 losses in 3 yrs, or material info missing.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="phead"><span class="k">Step 2</span><h2>AI Analysis</h2></div>
+      <div id="results"></div>
+    </div>
+  </section>
+
+  <section class="how">
+    <details>
+      <summary>How it works — the BA view<span class="chev">›</span></summary>
+      <div class="howbody">
+        <h3>The problem</h3>
+        <p>Underwriting assistants spend hours re-keying submission data from unstructured broker emails and attachments before an underwriter can even look at a risk. It's slow, error-prone, and inconsistent across teams.</p>
+        <h3>What the AI does</h3>
+        <p>A large language model reads the full submission as free text and returns structured output: extracted fields, a list of material gaps with severity, an appetite verdict scored against an explicit ruleset, and a drafted broker email. The ruleset is deliberately visible and editable — the underwriting team owns the logic, the AI applies it consistently.</p>
+        <div class="flow">
+          <span class="on">Broker submission</span><span>→ extract</span><span>→ flag gaps</span><span>→ appetite check</span><span class="on">→ drafted response</span>
+        </div>
+        <h3>Impact</h3>
+        <p>Cuts intake triage from ~20–30 minutes to under a minute, standardizes the appetite decision, and pushes a clean, complete risk to the underwriter — or a drafted info request back to the broker — on first touch.</p>
+        <h3>How it was built</h3>
+        <p class="muted">Single-page web app. The analysis runs a structured LLM call with the appetite ruleset embedded in the prompt and a strict JSON output contract, then renders the result into an underwriting console. Requirements, data model, prompt design and acceptance criteria defined as a BA deliverable. This hosted version walks through three worked sample submissions end to end.</p>
+      </div>
+    </details>
+  </section>
+
+  <p class="disc">Demonstration project using fictional companies and sample data. Not affiliated with any insurer. Appetite logic is illustrative. Analyses shown are real language-model outputs produced for these sample submissions.</p>
+  <footer>SubmissionIQ · built by Siddharth Waghmare · <a href="https://www.linkedin.com/in/siddharthwaghmare" target="_blank" rel="noopener">linkedin.com/in/siddharthwaghmare</a></footer>
+</div>
+
+<script>
+/* ---------- sample submissions (fictional) ---------- */
+const SAMPLES=[
+{id:"rest",label:"Restaurant",text:
+`From: Dana Ruiz <druiz@horizonbrokers.com>
+Subject: New Business — The Copper Skillet (Tempe AZ) — need BOP quote
+
+Hi team,
+
+New business submission for The Copper Skillet LLC, a sit-down casual
+dining restaurant in Tempe, AZ. They want to move at renewal (eff
+11/01/2026). Looking for GL + property on a BOP if we can.
+
+Quick facts from the ACORD:
+- Building is LEASED, ~3,200 sq ft strip-mall unit
+- Business personal property approx $185,000
+- Annual sales ~$1.4M, 18 employees (12 PT)
+- Operating since 2016
+- Full-service kitchen, no delivery
+
+Loss runs attached — one slip-and-fall GL claim in 2023, $12,400 paid,
+closed. Clean otherwise.
+
+Please advise appetite + indication. Thanks!
+Dana`},
+{id:"hvac",label:"HVAC Contractor",text:
+`From: Marcus Bell <mbell@keystonecommercial.com>
+Subject: GL submission — Summit Air Mechanical (artisan HVAC)
+
+Team — submission for Summit Air Mechanical Inc., a residential &
+light-commercial HVAC install/service contractor out of Mesa AZ.
+
+ACORD 125/126 highlights:
+- GL only, occurrence form, wants $1M/$2M
+- Payroll ~$640k, 9 field techs + 2 office
+- In business since 2021
+- ~15% new construction, rest service/replacement
+- No work above 3 stories, no industrial/refrigerant recovery beyond
+  standard EPA 608
+
+Loss runs: 2 claims in last 3 yrs — a $6k property-damage (ladder into a
+window, 2024) and a $31k water-damage claim from a bad condensate line
+(2025, closed). EMR 1.04.
+
+Appetite? Target eff 12/01.`},
+{id:"office",label:"Tech Office",text:
+`From: Priya Nair <pnair@anchorrisk.com>
+Subject: Package — Larkfield Analytics (office)
+
+Submission for Larkfield Analytics, a 40-person data-analytics software
+firm, downtown Phoenix. Need a package: property (leased office, BPP
+~$220k incl. servers/workstations) + GL $1M/$2M.
+
+- Startup, incorporated 2025 (18 months in business)
+- Annual revenue ~$5.2M, venture-backed
+- No prior losses (first-time buyer, prior carrier none)
+- Also asked about cyber — can we market separately?
+
+Effective 11/15. What's our appetite given time in business?`}
+];
+
+/* ---------- baked analyses (real model outputs for each sample) ---------- */
+const RESULTS={
+ rest:{
+  extracted:{namedInsured:"The Copper Skillet LLC",businessClass:"Casual dining restaurant (full-service)",location:"Tempe, AZ",coverages:"BOP — GL + Property",glLimits:"Not specified",propertyValues:"BPP $185,000 (building leased)",annualRevenue:"$1,400,000",employees:"18 (12 part-time)",yearsInBusiness:"~9 (since 2016)",effectiveDate:"11/01/2026",priorCarrier:"Not specified",lossSummary:"1 GL slip-and-fall, $12,400 paid, closed (2023)"},
+  missing:[
+   {field:"GL limits",note:"Broker didn't state requested GL limits — needed to rate and confirm adequacy.",severity:"high"},
+   {field:"Liquor liability",note:"Restaurant — unclear if alcohol is served. Materially affects class, appetite and pricing.",severity:"high"},
+   {field:"Prior carrier",note:"Current/expiring carrier not named — needed for loss-run verification and reason for moving.",severity:"medium"},
+   {field:"Building construction",note:"Construction type/year not provided for property rating of BPP.",severity:"low"}
+  ],
+  appetite:{verdict:"Refer",reasons:[
+   "Restaurant is within target appetite; 9 years in business and a single minor loss well under the $100k threshold are favorable.",
+   "Refer pending confirmation of liquor exposure — alcohol service would change the class and appetite decision.",
+   "GL limits must be confirmed before an indication can be released."
+  ]},
+  draftEmail:{subject:"The Copper Skillet LLC — submission received, info needed to quote",
+   body:`Hi Dana,
+
+Thanks for the submission on The Copper Skillet LLC — this class is within our appetite and the loss history looks clean, so we'd like to move forward.
+
+Before we can release an indication, please confirm:
+1. Requested GL limits (we'll assume $1M/$2M occurrence unless advised otherwise)
+2. Whether the restaurant serves alcohol, and if so, approx. liquor receipts
+3. Current/expiring carrier and reason for remarketing
+4. Building construction type and year (for BPP rating)
+
+As soon as we have these we'll turn an indication around quickly.
+
+Best regards,
+Underwriting`}
+ },
+ hvac:{
+  extracted:{namedInsured:"Summit Air Mechanical Inc.",businessClass:"Artisan contractor — residential & light-commercial HVAC",location:"Mesa, AZ",coverages:"General Liability (occurrence)",glLimits:"$1M / $2M requested",propertyValues:"N/A — GL only",annualRevenue:"Not specified (payroll ~$640,000)",employees:"11 (9 field, 2 office)",yearsInBusiness:"~5 (since 2021)",effectiveDate:"12/01/2026",priorCarrier:"Not specified",lossSummary:"2 claims / 3 yrs: $6k PD (2024), $31k water damage (2025), both closed. EMR 1.04"},
+  missing:[
+   {field:"Subcontractor usage",note:"Sub usage and certificate-of-insurance controls not addressed — a primary GL exposure for contractors.",severity:"high"},
+   {field:"Annual revenue / receipts",note:"Payroll given but not revenue; GL for contractors is typically receipts- or payroll-rated — confirm basis.",severity:"medium"},
+   {field:"Prior carrier",note:"Expiring carrier and reason for moving not stated.",severity:"medium"},
+   {field:"Commercial vs. residential split",note:"~15% new construction noted; confirm commercial/residential and habitational work mix.",severity:"low"}
+  ],
+  appetite:{verdict:"Refer",reasons:[
+   "Artisan HVAC contractor is within target appetite and 5 years in business is favorable.",
+   "Refer: two losses in the last three years meets the referral trigger. Both are closed and under the $100k single-loss decline threshold, so not a decline.",
+   "Subcontractor controls and the premium basis (receipts vs. payroll) must be confirmed before binding."
+  ]},
+  draftEmail:{subject:"Summit Air Mechanical Inc. — received, referred to senior underwriting",
+   body:`Hi Marcus,
+
+Thanks for the Summit Air Mechanical submission — artisan HVAC is in our wheelhouse. Because there are two losses in the last three years, I'm routing this to senior underwriting per our guidelines; both claims are closed and under our single-loss threshold, so this is a referral, not a decline.
+
+To complete the file, please send:
+1. Subcontractor usage — % of work subbed out and whether COIs/hold-harmless are collected
+2. Annual receipts (to confirm the GL rating basis alongside payroll)
+3. Current/expiring carrier and reason for remarketing
+4. Confirmation of the commercial vs. residential work split
+
+I'll move it through referral as soon as these are in.
+
+Best regards,
+Underwriting`}
+ },
+ office:{
+  extracted:{namedInsured:"Larkfield Analytics",businessClass:"Data-analytics software firm (office/technology)",location:"Phoenix, AZ",coverages:"Package — Property + GL",glLimits:"$1M / $2M requested",propertyValues:"BPP ~$220,000 incl. servers/workstations (leased office)",annualRevenue:"~$5,200,000",employees:"40",yearsInBusiness:"~1.5 (incorporated 2025)",effectiveDate:"11/15/2026",priorCarrier:"None (first-time buyer)",lossSummary:"No prior losses"},
+  missing:[
+   {field:"Business interruption values",note:"Revenue-dependent software firm with no BI values provided — likely a material coverage gap.",severity:"medium"},
+   {field:"Cyber / Tech E&O",note:"Broker asked about cyber; tech E&O also typical for this class. Outside this package — route to a specialist market.",severity:"medium"},
+   {field:"Building construction & occupancy",note:"Construction/occupancy details for the leased office not provided for property rating.",severity:"low"}
+  ],
+  appetite:{verdict:"Refer",reasons:[
+   "Office/technology class and a clean, loss-free history are within target appetite.",
+   "Refer: 18 months in business is under the 2-year threshold, which requires senior-underwriter review.",
+   "Cyber and tech E&O were requested — note for specialist markets; not covered under this package appetite."
+  ]},
+  draftEmail:{subject:"Larkfield Analytics — package received, referred for time-in-business",
+   body:`Hi Priya,
+
+Thanks for the Larkfield Analytics submission — the office/technology class and loss-free record look good. Since the company is 18 months in business, our guidelines route new ventures under two years to senior underwriting, so I've referred it for review.
+
+A couple of items to round out the file:
+1. Business interruption values (revenue-dependent operation — worth including)
+2. Building construction/occupancy for the leased office
+
+On cyber and tech E&O: those sit outside this package, but I can introduce our specialty team to market them separately — just let me know.
+
+Best regards,
+Underwriting`}
+ }
+};
+
+const CUSTOM_NOTE={custom:true};
+
+let current=0,busy=false;
+const $=s=>document.querySelector(s);
+
+/* theme */
+const sun='<path d="M12 17a5 5 0 100-10 5 5 0 000 10zM12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>';
+const moon='<path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>';
+function prefersDark(){const e=document.documentElement.getAttribute('data-theme');if(e)return e==='dark';return matchMedia('(prefers-color-scheme:dark)').matches;}
+function paintThemeIcon(){$('#themeIcon').innerHTML=prefersDark()?sun:moon;}
+$('#theme').addEventListener('click',()=>{document.documentElement.setAttribute('data-theme',prefersDark()?'light':'dark');paintThemeIcon();});
+matchMedia('(prefers-color-scheme:dark)').addEventListener('change',paintThemeIcon);
+paintThemeIcon();
+
+/* tabs: 3 samples + paste-your-own */
+const tabsEl=$('#tabs');
+SAMPLES.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.className='tab';b.textContent=s.label;b.setAttribute('role','tab');
+  b.setAttribute('aria-selected',i===0?'true':'false');
+  b.addEventListener('click',()=>selectTab(i));
+  tabsEl.appendChild(b);
+});
+const pasteBtn=document.createElement('button');
+pasteBtn.className='tab';pasteBtn.textContent='Paste your own';pasteBtn.setAttribute('role','tab');pasteBtn.setAttribute('aria-selected','false');
+pasteBtn.addEventListener('click',()=>selectTab('paste'));
+tabsEl.appendChild(pasteBtn);
+
+function setSelected(idx){
+  [...tabsEl.children].forEach((b,j)=>{
+    const sel=(idx==='paste')?(j===SAMPLES.length):(j===idx);
+    b.setAttribute('aria-selected',sel?'true':'false');
+  });
+}
+function selectTab(idx){
+  current=idx;setSelected(idx);
+  if(idx==='paste'){
+    $('#intake').value='';$('#intake').placeholder='Paste a broker submission here — email, ACORD details, loss runs…';
+    renderCustomPrompt();
+  }else{
+    $('#intake').value=SAMPLES[idx].text;
+    if(idx===0)renderResult(RESULTS[SAMPLES[0].id]);
+    else renderReady();
+  }
+}
+
+function esc(s){return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function naField(v){const na=!v||/^(not specified|n\/a)$/i.test(v);return `<div class="fv${na?' na':''}">${esc(v||'Not specified')}</div>`;}
+
+function renderReady(){
+  $('#results').innerHTML=`<div class="state"><div class="big">Ready to analyze</div><div>Click <b>Run AI Analysis</b> to process this submission.</div></div>`;
+}
+function renderCustomPrompt(){
+  $('#results').innerHTML=`<div class="state"><div class="big">Bring your own submission</div><div>This hosted demo runs the three sample submissions end to end. Paste text and click <b>Run AI Analysis</b> to see how custom input is handled.</div></div>`;
+}
+function renderCustomResult(){
+  $('#results').innerHTML=`<div class="state"><div class="big">Custom submission received</div><div>Live model analysis of arbitrary submissions runs in the full AI build of SubmissionIQ. In this hosted portfolio demo, the three sample tabs show complete, worked analyses — try <b>Restaurant</b>, <b>HVAC Contractor</b>, or <b>Tech Office</b> above.</div></div>`;
+}
+const STEPS=["Reading submission…","Extracting structured fields…","Flagging missing information…","Scoring against appetite ruleset…","Drafting broker response…"];
+function renderLoading(done){
+  $('#results').innerHTML=`<div class="state"><div class="spin"></div><div class="big">Analyzing submission…</div><div class="step" id="stepline"></div></div>`;
+  let i=0;const el=$('#stepline');
+  const t=setInterval(()=>{if(!document.getElementById('stepline')){clearInterval(t);return;}el.textContent=STEPS[i];i++;if(i>=STEPS.length)clearInterval(t);},230);
+  return ()=>clearInterval(t);
+}
+
+function verdictClass(v){v=(v||'').toLowerCase();return v.includes('decline')?'bad':v.includes('refer')?'warn':'good';}
+function renderResult(r){
+  const ex=r.extracted||{};
+  const defs=[["Named insured",ex.namedInsured],["Business class",ex.businessClass],["Location",ex.location],["Coverages",ex.coverages],["GL limits",ex.glLimits],["Property / BPP",ex.propertyValues],["Annual revenue",ex.annualRevenue],["Employees",ex.employees],["Years in business",ex.yearsInBusiness],["Effective date",ex.effectiveDate],["Prior carrier",ex.priorCarrier],["Loss history",ex.lossSummary]];
+  const fields=defs.map(([k,v])=>`<div class="field"><div class="fk">${esc(k)}</div>${naField(v)}</div>`).join('');
+  const miss=(r.missing||[]).map(m=>`<div class="flag"><span class="sev ${esc(m.severity||'low')}"></span><div><div class="ft"><b>${esc(m.field)}</b></div><div class="fn">${esc(m.note)}</div></div></div>`).join('');
+  const ap=r.appetite||{};
+  const reasons=(ap.reasons||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  const em=r.draftEmail||{};
+  $('#results').innerHTML=`
+    <div class="rblock"><div class="rlabel">Extracted submission data</div><div class="fields">${fields}</div></div>
+    <div class="rblock"><div class="rlabel">Data quality &amp; missing info</div>${miss}</div>
+    <div class="rblock"><div class="rlabel">Appetite assessment</div>
+      <div class="verdict"><span class="pill ${verdictClass(ap.verdict)}">${esc(ap.verdict||'—')}</span></div>
+      <ul class="reasons">${reasons}</ul></div>
+    <div class="rblock"><div class="rlabel">Drafted broker email</div>
+      <div class="email"><div class="subj"><b>Subject:</b> ${esc(em.subject||'')}</div>
+        <pre id="emailbody">${esc(em.body||'')}</pre>
+        <button class="copy" id="copy"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>Copy email</button>
+      </div></div>`;
+  const cb=$('#copy');
+  if(cb)cb.addEventListener('click',()=>{
+    const t=(em.subject?('Subject: '+em.subject+'\n\n'):'')+(em.body||'');
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(()=>{cb.lastChild.textContent='Copied';setTimeout(()=>cb.lastChild.textContent='Copy email',1600);}).catch(selectEmail);
+    }else selectEmail();
+  });
+}
+function selectEmail(){const n=$('#emailbody');if(!n)return;const rng=document.createRange();rng.selectNodeContents(n);const s=getSelection();s.removeAllRanges();s.addRange(rng);}
+
+function runAnalysis(){
+  if(busy)return;busy=true;$('#run').disabled=true;
+  const stop=renderLoading();
+  const isPaste=(current==='paste');
+  setTimeout(()=>{
+    stop();
+    if(isPaste)renderCustomResult();
+    else renderResult(RESULTS[SAMPLES[current].id]);
+    busy=false;$('#run').disabled=false;
+  },1180);
+}
+$('#run').addEventListener('click',runAnalysis);
+
+/* boot */
+$('#intake').value=SAMPLES[0].text;
+renderResult(RESULTS[SAMPLES[0].id]);
+$('#runhint').textContent='Runs the full analysis for the selected submission.';
+</script>
+</body>
+</html>
