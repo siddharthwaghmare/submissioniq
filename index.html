@@ -428,10 +428,10 @@ function renderReady(){
   $('#results').innerHTML=`<div class="state"><div class="big">Ready to analyze</div><div>Click <b>Run AI Analysis</b> to process this submission.</div></div>`;
 }
 function renderCustomPrompt(){
-  $('#results').innerHTML=`<div class="state"><div class="big">Bring your own submission</div><div>This hosted demo runs the three sample submissions end to end. Paste text and click <b>Run AI Analysis</b> to see how custom input is handled.</div></div>`;
+  $('#results').innerHTML=`<div class="state"><div class="big">Live analysis is not enabled on this page</div><div>This hosted demo is a static page, so it cannot call a model on pasted text. The prompt, appetite ruleset and output contract are designed to run against a live model; the three sample tabs show complete worked analyses.</div></div>`;
 }
 function renderCustomResult(){
-  $('#results').innerHTML=`<div class="state"><div class="big">Custom submission received</div><div>Live model analysis of arbitrary submissions runs in the full AI build of SubmissionIQ. In this hosted portfolio demo, the three sample tabs show complete, worked analyses — try <b>Restaurant</b>, <b>HVAC Contractor</b>, or <b>Tech Office</b> above.</div></div>`;
+  $('#results').innerHTML=`<div class="state"><div class="big">Not analyzed — live model not connected</div><div>Your text was not sent anywhere. This hosted demo cannot call a model, so pasted submissions are not analyzed here. The design supports it: the same prompt, ruleset and output contract apply to any submission. Try <b>Restaurant</b>, <b>HVAC Contractor</b> or <b>Tech Office</b> above for worked examples.</div></div>`;
 }
 const STEPS=["Reading submission…","Extracting structured fields…","Flagging missing information…","Scoring against appetite ruleset…","Drafting broker response…"];
 function renderLoading(done){
