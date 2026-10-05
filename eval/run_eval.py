@@ -156,6 +156,15 @@ def pct(a, b):
     return round(100.0 * a / b, 1) if b else None
 
 
+def fail(msg, out):
+    """Stops the run and leaves the reason where it can be read from the repository."""
+    p = pathlib.Path(out)
+    p.mkdir(parents=True, exist_ok=True)
+    (p / "last_error.txt").write_text(datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ") + "\n" + msg + "\n", encoding="utf-8")
+    print("::error::" + msg.replace("\n", " "))
+    sys.exit(1)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", default=os.environ.get("EVAL_MODEL") or "openai/gpt-4o-mini")
@@ -191,7 +200,7 @@ def main():
         rows.append(row)
         outputs[c["id"]] = o
         if mock is None and i == 2 and all("call failed" in " ".join(r["failures"]) for r in rows):
-            sys.exit("first three model calls failed, stopping: " + rows[0]["failures"][0])
+            fail("first three model calls failed, stopping: " + rows[0]["failures"][0], a.out)
         print("%s %-4s %s" % (c["id"], "PASS" if row["passed"] else "FAIL", "; ".join(row["failures"])[:200]), flush=True)
 
     n = len(rows)
@@ -219,9 +228,11 @@ def main():
         "summary": summary, "cases": rows,
     }
     if all("call failed" in " ".join(r["failures"]) for r in rows):
-        sys.exit("every model call failed; results not written")
+        fail("every model call failed; results not written", a.out)
     out = pathlib.Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
+    if (out / "last_error.txt").exists():
+        (out / "last_error.txt").unlink()
     (out / "latest.json").write_text(json.dumps(run, indent=1) + "\n", encoding="utf-8")
     (out / "latest_outputs.json").write_text(json.dumps(outputs, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     hp = out / "history.json"
