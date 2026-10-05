@@ -214,12 +214,12 @@ footer a:hover{color:var(--accent)}
         <h3>Impact</h3>
         <p>Cuts intake triage from ~20–30 minutes to under a minute, standardizes the appetite decision, and pushes a clean, complete risk to the underwriter — or a drafted info request back to the broker — on first touch.</p>
         <h3>How it was built</h3>
-        <p class="muted">Single-page web app. The analysis runs a structured LLM call with the appetite ruleset embedded in the prompt and a strict JSON output contract, then renders the result into an underwriting console. Requirements, data model, prompt design and acceptance criteria defined as a BA deliverable. This hosted version walks through three worked sample submissions end to end.</p>
+        <p class="muted">Single-page web app. The analysis runs a structured LLM call with the appetite ruleset embedded in the prompt and a strict JSON output contract, then renders the result into an underwriting console. Requirements, data model, prompt design and acceptance criteria defined as a BA deliverable. This hosted version walks through three worked sample submissions end to end, one for each verdict: Refer to Underwriter, Decline and In Appetite.</p>
       </div>
     </details>
   </section>
 
-  <p class="disc">Demonstration project using fictional companies and sample data. Not affiliated with any insurer. Appetite logic is illustrative. Analyses shown are real language-model outputs produced for these sample submissions.</p>
+  <p class="disc">Demonstration project using fictional companies and sample data. Not affiliated with any insurer. Appetite logic is illustrative. Analyses shown were pre-generated with a language model for these sample submissions; this hosted page replays them and does not call a model live.</p>
   <footer>SubmissionIQ · built by Siddharth Waghmare · <a href="https://www.linkedin.com/in/siddharthwaghmare" target="_blank" rel="noopener">linkedin.com/in/siddharthwaghmare</a></footer>
 </div>
 
@@ -263,11 +263,13 @@ ACORD 125/126 highlights:
 - No work above 3 stories, no industrial/refrigerant recovery beyond
   standard EPA 608
 
-Loss runs: 2 claims in last 3 yrs — a $6k property-damage (ladder into a
-window, 2024) and a $31k water-damage claim from a bad condensate line
-(2025, closed). EMR 1.04.
+Loss runs: 3 claims in last 3 yrs — a $6k property-damage (ladder into a
+window, 2024, closed), a $31k water-damage claim from a bad condensate
+line (2025, closed), and a 2026 bodily-injury claim alleging carbon
+monoxide exposure after a furnace install — still OPEN, reserved at
+$85k, claimant has retained counsel. EMR 1.04.
 
-Appetite? Target eff 12/01.`},
+Current carrier is non-renewing. Appetite? Target eff 12/01.`},
 {id:"office",label:"Tech Office",text:
 `From: Priya Nair <pnair@anchorrisk.com>
 Subject: Package — Larkfield Analytics (office)
@@ -276,15 +278,17 @@ Submission for Larkfield Analytics, a 40-person data-analytics software
 firm, downtown Phoenix. Need a package: property (leased office, BPP
 ~$220k incl. servers/workstations) + GL $1M/$2M.
 
-- Startup, incorporated 2025 (18 months in business)
-- Annual revenue ~$5.2M, venture-backed
-- No prior losses (first-time buyer, prior carrier none)
+- Incorporated 2022 (4 years in business)
+- Annual revenue ~$5.2M
+- Business income: $1.2M, 12-month limit requested
+- No losses in 4 years — loss runs attached from the expiring carrier;
+  remarketing on price only
 - Also asked about cyber — can we market separately?
 
-Effective 11/15. What's our appetite given time in business?`}
+Effective 11/15. Hoping for an indication this week.`}
 ];
 
-/* ---------- baked analyses (real model outputs for each sample) ---------- */
+/* ---------- worked analyses for each sample ---------- */
 const RESULTS={
  rest:{
   extracted:{namedInsured:"The Copper Skillet LLC",businessClass:"Casual dining restaurant (full-service)",location:"Tempe, AZ",coverages:"BOP — GL + Property",glLimits:"Not specified",propertyValues:"BPP $185,000 (building leased)",annualRevenue:"$1,400,000",employees:"18 (12 part-time)",yearsInBusiness:"~9 (since 2016)",effectiveDate:"11/01/2026",priorCarrier:"Not specified",lossSummary:"1 GL slip-and-fall, $12,400 paid, closed (2023)"},
@@ -316,56 +320,55 @@ Best regards,
 Underwriting`}
  },
  hvac:{
-  extracted:{namedInsured:"Summit Air Mechanical Inc.",businessClass:"Artisan contractor — residential & light-commercial HVAC",location:"Mesa, AZ",coverages:"General Liability (occurrence)",glLimits:"$1M / $2M requested",propertyValues:"N/A — GL only",annualRevenue:"Not specified (payroll ~$640,000)",employees:"11 (9 field, 2 office)",yearsInBusiness:"~5 (since 2021)",effectiveDate:"12/01/2026",priorCarrier:"Not specified",lossSummary:"2 claims / 3 yrs: $6k PD (2024), $31k water damage (2025), both closed. EMR 1.04"},
+  extracted:{namedInsured:"Summit Air Mechanical Inc.",businessClass:"Artisan contractor — residential & light-commercial HVAC",location:"Mesa, AZ",coverages:"General Liability (occurrence)",glLimits:"$1M / $2M requested",propertyValues:"N/A — GL only",annualRevenue:"Not specified (payroll ~$640,000)",employees:"11 (9 field, 2 office)",yearsInBusiness:"~5 (since 2021)",effectiveDate:"12/01/2026",priorCarrier:"Not named — current carrier is non-renewing",lossSummary:"3 claims / 3 yrs: $6k PD (2024, closed), $31k water damage (2025, closed), BI — CO exposure (2026, OPEN, $85k reserve, claimant represented). EMR 1.04"},
   missing:[
-   {field:"Subcontractor usage",note:"Sub usage and certificate-of-insurance controls not addressed — a primary GL exposure for contractors.",severity:"high"},
-   {field:"Annual revenue / receipts",note:"Payroll given but not revenue; GL for contractors is typically receipts- or payroll-rated — confirm basis.",severity:"medium"},
-   {field:"Prior carrier",note:"Expiring carrier and reason for moving not stated.",severity:"medium"},
-   {field:"Commercial vs. residential split",note:"~15% new construction noted; confirm commercial/residential and habitational work mix.",severity:"low"}
+   {field:"Subcontractor usage",note:"Sub usage and certificate-of-insurance controls not addressed — would be required on any future resubmission.",severity:"medium"},
+   {field:"Prior carrier",note:"Non-renewing carrier not named; reason for non-renewal not stated.",severity:"medium"},
+   {field:"Annual revenue / receipts",note:"Payroll given but not receipts. Not requested from the broker — it would not change a decline.",severity:"low"}
   ],
-  appetite:{verdict:"Refer to Underwriter",reasons:[
-   "Artisan HVAC contractor is within target appetite and 5 years in business is favorable.",
-   "Refer: two losses in the last three years meets the referral trigger. Both are closed and under the $100k single-loss decline threshold, so not a decline.",
-   "Subcontractor controls and the premium basis (receipts vs. payroll) must be confirmed before binding."
+  appetite:{verdict:"Decline",reasons:[
+   "Artisan HVAC is a target class, so the class itself is not the issue — the loss history is.",
+   "Decline: three losses in the last three years meets the 3+ losses decline rule.",
+   "Decline: the 2026 bodily-injury claim is open with the claimant represented, which meets the open/litigated-claim decline rule on its own.",
+   "No single loss exceeds $100k (largest is the $85k open reserve), so that rule is not the trigger."
   ]},
-  draftEmail:{subject:"Summit Air Mechanical Inc. — received, referred to senior underwriting",
+  draftEmail:{subject:"Summit Air Mechanical Inc. — unable to offer terms",
    body:`Hi Marcus,
 
-Thanks for the Summit Air Mechanical submission — artisan HVAC is in our wheelhouse. Because there are two losses in the last three years, I'm routing this to senior underwriting per our guidelines; both claims are closed and under our single-loss threshold, so this is a referral, not a decline.
+Thanks for sending over Summit Air Mechanical. Artisan HVAC is a class we like, but I'm not able to offer terms on this one.
 
-To complete the file, please send:
-1. Subcontractor usage — % of work subbed out and whether COIs/hold-harmless are collected
-2. Annual receipts (to confirm the GL rating basis alongside payroll)
-3. Current/expiring carrier and reason for remarketing
-4. Confirmation of the commercial vs. residential work split
+Two things put it outside our guidelines: three losses in the last three years, and the 2026 carbon-monoxide bodily-injury claim, which is still open with the claimant represented. Either one on its own is a decline for us, so I don't want to hold you up with information requests that wouldn't change the answer.
 
-I'll move it through referral as soon as these are in.
+We'd be glad to look again once the open claim has closed and the account has some loss-free time behind it. If you resubmit then, details on subcontractor usage and COI controls would help.
+
+Sorry we can't help on this one — please keep sending us your contractors.
 
 Best regards,
 Underwriting`}
  },
  office:{
-  extracted:{namedInsured:"Larkfield Analytics",businessClass:"Data-analytics software firm (office/technology)",location:"Phoenix, AZ",coverages:"Package — Property + GL",glLimits:"$1M / $2M requested",propertyValues:"BPP ~$220,000 incl. servers/workstations (leased office)",annualRevenue:"~$5,200,000",employees:"40",yearsInBusiness:"~1.5 (incorporated 2025)",effectiveDate:"11/15/2026",priorCarrier:"None (first-time buyer)",lossSummary:"No prior losses"},
+  extracted:{namedInsured:"Larkfield Analytics",businessClass:"Data-analytics software firm (office/technology)",location:"Phoenix, AZ",coverages:"Package — Property + GL",glLimits:"$1M / $2M requested",propertyValues:"BPP ~$220,000 incl. servers/workstations (leased office); business income $1.2M, 12 months",annualRevenue:"~$5,200,000",employees:"40",yearsInBusiness:"4 (incorporated 2022)",effectiveDate:"11/15/2026",priorCarrier:"Expiring carrier not named — remarketing on price",lossSummary:"No losses in 4 years (loss runs attached)"},
   missing:[
-   {field:"Business interruption values",note:"Revenue-dependent software firm with no BI values provided — likely a material coverage gap.",severity:"medium"},
-   {field:"Cyber / Tech E&O",note:"Broker asked about cyber; tech E&O also typical for this class. Outside this package — route to a specialist market.",severity:"medium"},
-   {field:"Building construction & occupancy",note:"Construction/occupancy details for the leased office not provided for property rating.",severity:"low"}
+   {field:"Building construction & protection",note:"Construction type and sprinkler/alarm details for the leased office not provided — needed to finalize the property rate, not to confirm appetite.",severity:"low"},
+   {field:"Expiring carrier name",note:"Loss runs are attached but the carrier isn't named in the email.",severity:"low"}
   ],
-  appetite:{verdict:"Refer to Underwriter",reasons:[
-   "Office/technology class and a clean, loss-free history are within target appetite.",
-   "Refer: 18 months in business is under the 2-year threshold, which requires senior-underwriter review.",
-   "Cyber and tech E&O were requested — note for specialist markets; not covered under this package appetite."
+  appetite:{verdict:"In Appetite",reasons:[
+   "Office/technology is a target class.",
+   "4 years in business clears the 2-year referral threshold.",
+   "Loss-free for 4 years — no loss-count or open-claim rule applies.",
+   "Property TIV (~$220k BPP plus $1.2M business income) is far below the $10M referral threshold.",
+   "No material information is missing; the two open items are rating details. Cyber was requested but sits outside this package."
   ]},
-  draftEmail:{subject:"Larkfield Analytics — package received, referred for time-in-business",
+  draftEmail:{subject:"Larkfield Analytics — in appetite, proceeding to quote",
    body:`Hi Priya,
 
-Thanks for the Larkfield Analytics submission — the office/technology class and loss-free record look good. Since the company is 18 months in business, our guidelines route new ventures under two years to senior underwriting, so I've referred it for review.
+Thanks for the Larkfield Analytics submission. This fits our appetite well — office/technology class, four years in business and a loss-free record — so we're moving straight to quote and will aim to have an indication to you this week.
 
-A couple of items to round out the file:
-1. Business interruption values (revenue-dependent operation — worth including)
-2. Building construction/occupancy for the leased office
+Two small items to finalize the property rate (no need to hold the quote for them):
+1. Building construction type, plus sprinkler/alarm protection for the leased office
+2. Name of the expiring carrier
 
-On cyber and tech E&O: those sit outside this package, but I can introduce our specialty team to market them separately — just let me know.
+On cyber: that sits outside this package, but I can introduce our specialty team to market it separately — just let me know.
 
 Best regards,
 Underwriting`}

@@ -33,7 +33,7 @@ Broker submission → extract → flag gaps → appetite check → drafted respo
 
 A single-page web app. The analysis runs a structured LLM call with the appetite ruleset embedded in the prompt and a JSON output contract, then renders the result into an underwriting console. Requirements, data model, prompt design, and acceptance criteria were defined as a BA deliverable.
 
-This hosted version walks through three worked sample submissions (restaurant, artisan HVAC contractor, tech-firm office package) end to end. A live-API build — where the model analyzes any pasted submission in real time via a serverless backend — is the natural next iteration.
+This hosted version walks through three worked sample submissions end to end, one for each verdict: a restaurant (Refer to Underwriter), an artisan HVAC contractor (Decline) and a tech-firm office package (In Appetite). The analyses are pre-generated; the hosted page replays them and does not call a model live. A live-API build — where the model analyzes any pasted submission in real time via a serverless backend — is the natural next iteration.
 
 ## Tech
 
