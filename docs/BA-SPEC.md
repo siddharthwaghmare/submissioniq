@@ -40,12 +40,26 @@ Commercial submission intake is manual. An underwriting assistant reads a broker
 | FR-2 | The system shall extract the twelve fields in the output contract (section 5). |
 | FR-3 | Where a field is not stated in the submission, the system shall return "Not specified" and shall not infer a value. |
 | FR-4 | The system shall list missing or incomplete information, each with a severity of high, medium or low. |
-| FR-5 | A gap is **material** when its severity is high: the appetite decision or the ability to quote depends on it. |
+| FR-5 | A gap is **material** when its severity is high. Only the items listed in section 4.1 are high severity. |
 | FR-6 | The system shall return exactly one verdict: In Appetite, Refer to Underwriter, or Decline. |
 | FR-7 | Every verdict shall carry reasons, and each reason shall name the rule it applies. |
 | FR-8 | The appetite ruleset shall be displayed to the user alongside the result. |
 | FR-9 | The system shall draft a broker email consistent with the verdict (section 6.2). |
 | FR-10 | The system shall not send the email or record a decision; a person reviews every output. |
+
+### 4.1 Material information
+
+A gap is high severity, and so triggers rule R4, only when one of these is true:
+
+- the business class or operations are unclear
+- time in business is not stated
+- loss history is not provided, or the submission contradicts itself about losses
+- requested coverages are not stated, or GL is requested and GL limits are not stated
+- property coverage is requested and property values are not stated
+- restaurants: whether alcohol is served is not stated
+- habitational risks: the number of units is not stated
+
+Naming these is what makes "material information missing" testable. Everything else, such as the prior carrier's name or building construction, is medium or low.
 
 ## 5. Output contract
 
@@ -72,11 +86,14 @@ The model returns one JSON object in this shape. A fixed shape is what makes the
   ],
   "appetite": {
     "verdict": "In Appetite | Refer to Underwriter | Decline",
+    "rules": ["D1"],
     "reasons": ["string"]
   },
   "draftEmail": { "subject": "string", "body": "string" }
 }
 ```
+
+`appetite.rules` lists the decision-table IDs that apply. It was added for the evaluation: a rule ID can be scored exactly, where a sentence cannot. The hosted demo page predates it and does not display it.
 
 ## 6. Appetite rules
 
@@ -96,6 +113,13 @@ Rules are evaluated in this order. The first group that matches sets the verdict
 | R4 | Any material (high-severity) information missing | Refer to Underwriter |
 | A1 | Target class (restaurant, office, light retail, artisan contractor, habitational up to 50 units) and no D or R rule matched | In Appetite |
 | R5 | Class is not a target class and not a declined class | Refer to Underwriter |
+
+Definitions used by the rules:
+
+- "Last three years" means the three years before the effective date.
+- A loss amount is its total incurred: paid plus reserve.
+- Property total insured value is building plus business personal property plus business income or rental income.
+- Thresholds are strict: a loss of exactly $100,000, a TIV of exactly $10M and exactly two years in business do not trigger D4, R1 or R2.
 
 R5 is a rule this specification adds. The ruleset on the page does not say what happens to a class that is neither targeted nor declined; referring it is the safe default.
 
@@ -149,43 +173,62 @@ Given any verdict
 When the reasons are listed
 Then each reason maps to a row of the decision table.
 
-## 8. Evaluation plan
+## 8. Evaluation
 
-The hosted demo replays pre-generated analyses, so it has no accuracy figures to report. This section defines how a live-model build would be measured.
+The hosted demo replays pre-generated analyses, so accuracy is measured separately. A golden set of 30 submissions is run through a live model in GitHub Actions, scored automatically, and published at [eval.html](https://siddharthwaghmare.github.io/submissioniq/eval.html).
+
+| Part | Location |
+|---|---|
+| Test cases and expected answers | `eval/golden_set.json`, built from `eval/build_golden.py` |
+| Model prompt, including the rules | `eval/prompt.md` |
+| Scoring code | `eval/run_eval.py` |
+| Workflow | `.github/workflows/eval.yml` |
+| Results and run history | `eval/results/` |
 
 ### 8.1 Golden set
 
-The three sample submissions are the first golden cases. Each has an expected verdict and expected rule hits.
+Thirty cases: 10 Decline, 12 Refer to Underwriter, 8 In Appetite. Every rule has at least one case. Each case states the expected verdict, the rules that must be cited, the rules that must not be cited, and selected fields to check.
 
-| Case | Expected verdict | Rules that must be cited | Rules that must not be cited |
-|---|---|---|---|
-| The Copper Skillet (restaurant) | Refer to Underwriter | R4 | Any D rule |
-| Summit Air Mechanical (HVAC) | Decline | D2, D3 | D4 |
-| Larkfield Analytics (office) | In Appetite | A1 | Any D or R rule |
+The set includes these deliberate traps:
 
-A usable golden set needs more than three cases. The target is 30, with at least one case per rule and the boundary cases below.
+| Case | Trap |
+|---|---|
+| G10 | Two losses, one open: D2 must win over R3 |
+| G11 | Four losses and missing limits: Decline must win over Refer |
+| G12 | A single loss of exactly $100,000: D4 must not fire |
+| G15 | Property values of exactly $10M: R1 must not fire |
+| G17 | Exactly two years in business: R2 must not fire |
+| G23 | A 310-unit self-storage facility: must not be read as habitational |
+| G25 | Exactly 50 apartment units: still a target class |
+| G26 | The email says "no claims" and the pasted loss run shows one |
+| G30 | Three losses, only one inside the three-year window |
 
-### 8.2 Boundary cases to add
+### 8.2 Assumptions in the expected answers
 
-- Exactly two years in business (R2 must not fire)
-- A single loss of exactly $100,000 (D4 must not fire)
-- Property TIV of exactly $10M (R1 must not fire)
-- Two losses, one of them open (D2 must win over R3)
-- A class outside both lists, for example a daycare (R5)
-- A submission that contradicts itself, for example "no losses" in the email and a claim in the loss run
+- A submission that contradicts itself on losses (G26) is referred under R4.
+- Habitational over 50 units (G24) is referred under R5, not declined.
+- D2 and D4 apply to any claim shown on the loss runs, with no lookback limit.
 
 ### 8.3 Measures
 
 | Measure | Definition | Target |
 |---|---|---|
-| Field accuracy | Extracted fields matching the expected value, over all fields | 95% or higher |
-| Invented-value rate | Fields given a value the submission does not contain | 0 |
-| Verdict accuracy | Cases with the expected verdict | 100% on the golden set |
-| Unsafe-verdict rate | Cases returned In Appetite when expected Refer or Decline | 0 |
-| Reason traceability | Reasons that map to a decision-table row | 100% |
+| Verdict accuracy | Cases with the expected verdict | 100% |
+| Unsafe verdicts | Cases returned In Appetite when expected Refer or Decline | 0 |
+| Field accuracy | Checked fields that match the submission | 95% or higher |
+| Invented values | Fields given a value the submission does not state | 0 |
+| Rule accuracy | Cases citing every required rule and no forbidden rule | 100% |
+| Reason traceability | Cases whose cited rule IDs all exist in the decision table | 100% |
 | Contract validity | Responses that parse against the output contract | 100% |
+| Decline emails clean | Decline emails that ask the broker for nothing | 100% |
 
-Unsafe-verdict rate matters most. Referring a clean risk costs an underwriter a few minutes; passing a risk that should have been declined costs a loss.
+Unsafe verdicts matter most. Referring a clean risk costs an underwriter a few minutes; passing a risk that should have been declined costs a loss.
+
+### 8.4 Limits of this evaluation
+
+- Thirty cases is small. A passing run shows the rules are applied correctly on these cases, not on every submission.
+- Field checks cover selected fields per case, not all twelve.
+- The cases were written alongside the prompt, so they favor it. Real broker submissions would be a harder test.
 
 ## 9. Controls
 
@@ -196,7 +239,7 @@ Unsafe-verdict rate matters most. Referring a clean risk costs an underwriter a 
 
 ## 10. Known limitations
 
-- The hosted page replays pre-generated analyses and does not call a model live.
+- The hosted page replays pre-generated analyses and does not call a model live; the live model runs in the evaluation only.
 - Input is pasted text only; real submissions arrive as PDFs, spreadsheets and scans.
 - The ruleset is illustrative and far smaller than a carrier's underwriting guide.
 - Loss counting assumes the loss run is complete and current.

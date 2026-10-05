@@ -1,0 +1,922 @@
+[
+ {
+  "id": "G01",
+  "title": "Restaurant, limits and alcohol not stated",
+  "tests": "R4 material gap",
+  "submission": "From: Dana Ruiz <druiz@horizonbrokers.com>\nSubject: New Business — The Copper Skillet (Tempe AZ) — need BOP quote\n\nHi team,\n\nNew business submission for The Copper Skillet LLC, a sit-down casual\ndining restaurant in Tempe, AZ. They want to move at renewal (eff\n11/01/2026). Looking for GL + property on a BOP if we can.\n\nQuick facts from the ACORD:\n- Building is LEASED, ~3,200 sq ft strip-mall unit\n- Business personal property approx $185,000\n- Annual sales ~$1.4M, 18 employees (12 PT)\n- Operating since 2016\n- Full-service kitchen, no delivery\n\nLoss runs attached — one slip-and-fall GL claim in 2023, $12,400 paid,\nclosed. Clean otherwise.\n\nPlease advise appetite + indication. Thanks!\nDana",
+  "expected": {
+   "verdict": "Refer to Underwriter",
+   "rulesRequired": [
+    "R4"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "copper skillet"
+    ],
+    "location": [
+     "tempe"
+    ],
+    "effectiveDate": [
+     "11/01/2026"
+    ],
+    "glLimits": "NOT_SPECIFIED",
+    "priorCarrier": "NOT_SPECIFIED"
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G02",
+  "title": "HVAC contractor, three losses and an open claim",
+  "tests": "D2 and D3 together; D4 must not fire",
+  "submission": "From: Marcus Bell <mbell@keystonecommercial.com>\nSubject: GL submission — Summit Air Mechanical (artisan HVAC)\n\nTeam — submission for Summit Air Mechanical Inc., a residential &\nlight-commercial HVAC install/service contractor out of Mesa AZ.\n\nACORD 125/126 highlights:\n- GL only, occurrence form, wants $1M/$2M\n- Payroll ~$640k, 9 field techs + 2 office\n- In business since 2021\n- ~15% new construction, rest service/replacement\n- No work above 3 stories, no industrial/refrigerant recovery beyond\n  standard EPA 608\n\nLoss runs: 3 claims in last 3 yrs — a $6k property-damage (ladder into a\nwindow, 2024, closed), a $31k water-damage claim from a bad condensate\nline (2025, closed), and a 2026 bodily-injury claim alleging carbon\nmonoxide exposure after a furnace install — still OPEN, reserved at\n$85k, claimant has retained counsel. EMR 1.04.\n\nCurrent carrier is non-renewing. Appetite? Target eff 12/01.",
+  "expected": {
+   "verdict": "Decline",
+   "rulesRequired": [
+    "D2",
+    "D3"
+   ],
+   "rulesForbidden": [
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "summit air"
+    ],
+    "location": [
+     "mesa"
+    ],
+    "glLimits": [
+     "1m/2m"
+    ],
+    "effectiveDate": [
+     "12/01"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G03",
+  "title": "Tech office, clean",
+  "tests": "A1 clean risk",
+  "submission": "From: Priya Nair <pnair@anchorrisk.com>\nSubject: Package — Larkfield Analytics (office)\n\nSubmission for Larkfield Analytics, a 40-person data-analytics software\nfirm, downtown Phoenix. Need a package: property (leased office, BPP\n~$220k incl. servers/workstations) + GL $1M/$2M.\n\n- Incorporated 2022 (4 years in business)\n- Annual revenue ~$5.2M\n- Business income: $1.2M, 12-month limit requested\n- No losses in 4 years — loss runs attached from the expiring carrier;\n  remarketing on price only\n- Also asked about cyber — can we market separately?\n\nEffective 11/15. Hoping for an indication this week.",
+  "expected": {
+   "verdict": "In Appetite",
+   "rulesRequired": [
+    "A1"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5"
+   ],
+   "fields": {
+    "namedInsured": [
+     "larkfield"
+    ],
+    "location": [
+     "phoenix"
+    ],
+    "glLimits": [
+     "1m/2m"
+    ],
+    "effectiveDate": [
+     "11/15"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G04",
+  "title": "Cannabis dispensary presented as retail",
+  "tests": "D1 excluded class",
+  "submission": "From: Tom Avery <tavery@westgatebrokerage.com>\nSubject: BOP — Green Mesa Wellness LLC (retail)\n\nRetail account for you. Green Mesa Wellness LLC operates a state-licensed\nrecreational cannabis dispensary at a strip-center storefront in Phoenix, AZ.\n\n- BOP: GL $1M/$2M + contents\n- BPP $240,000 (leased space), annual sales ~$3.8M\n- Operating since 2021, 14 employees\n- No losses since inception, loss runs attached\n- Central-station alarm, vault for inventory\n\nEffective 12/01/2026. Standard retail risk in my view. Appetite?",
+  "expected": {
+   "verdict": "Decline",
+   "rulesRequired": [
+    "D1"
+   ],
+   "rulesForbidden": [],
+   "fields": {
+    "namedInsured": [
+     "green mesa"
+    ],
+    "effectiveDate": [
+     "12/01/2026"
+    ],
+    "glLimits": [
+     "1m/2m"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G05",
+  "title": "Adult entertainment venue",
+  "tests": "D1 excluded class",
+  "submission": "From: Renee Castillo <rcastillo@sonoranrisk.com>\nSubject: GL + liquor — Velvet Room Entertainment LLC\n\nSubmission for Velvet Room Entertainment LLC, Scottsdale AZ. Gentlemen's\nclub with live adult entertainment and a full bar, open 6 nights.\n\n- GL $1M/$2M plus liquor liability\n- Annual receipts ~$2.6M, liquor about 55% of sales\n- In business since 2015, 32 employees plus contracted performers\n- No claims in the last five years, loss runs attached\n\nEffective 01/01/2027. Incumbent is exiting the class. Can you look?",
+  "expected": {
+   "verdict": "Decline",
+   "rulesRequired": [
+    "D1"
+   ],
+   "rulesForbidden": [],
+   "fields": {
+    "namedInsured": [
+     "velvet room"
+    ],
+    "effectiveDate": [
+     "01/01/2027"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G06",
+  "title": "Iron foundry",
+  "tests": "D1 excluded class",
+  "submission": "From: Paul Demetriou <pdemetriou@cactuscommercial.com>\nSubject: Package — Ironbridge Castings Inc.\n\nIronbridge Castings Inc., Tucson AZ. Grey-iron foundry: melts, pours and\nmachines castings for mining and heavy-equipment customers. Two furnaces,\n85 employees across two shifts.\n\n- Property + GL $1M/$2M\n- Building $4,200,000, equipment and stock $3,100,000\n- Established 1998\n- One loss in the last three years: 2025 forklift damage to a customer's\n  truck, $18,000 paid, closed\n\nEffective 11/15/2026.",
+  "expected": {
+   "verdict": "Decline",
+   "rulesRequired": [
+    "D1"
+   ],
+   "rulesForbidden": [],
+   "fields": {
+    "namedInsured": [
+     "ironbridge"
+    ],
+    "location": [
+     "tucson"
+    ],
+    "effectiveDate": [
+     "11/15/2026"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G07",
+  "title": "Office with one large closed loss",
+  "tests": "D4 single loss over $100k; D3 must not fire",
+  "submission": "From: Lisa Monroe <lmonroe@horizonbrokers.com>\nSubject: Package — Halden & Pryce CPAs PLLC\n\nHalden & Pryce CPAs PLLC, accounting office in Chandler AZ, 22 staff.\n\n- Package: BPP $310,000 (leased suite) + GL $1M/$2M\n- Annual revenue ~$4.1M\n- In business since 2011\n- Loss runs: one claim. March 2025, sprinkler line burst over the server\n  room, $140,000 paid, closed. Nothing else in five years.\n\nEffective 12/15/2026. Good account apart from the one water loss.",
+  "expected": {
+   "verdict": "Decline",
+   "rulesRequired": [
+    "D4"
+   ],
+   "rulesForbidden": [
+    "D2",
+    "D3"
+   ],
+   "fields": {
+    "namedInsured": [
+     "halden"
+    ],
+    "location": [
+     "chandler"
+    ],
+    "effectiveDate": [
+     "12/15/2026"
+    ],
+    "glLimits": [
+     "1m/2m"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G08",
+  "title": "Gift shop with three small losses",
+  "tests": "D3 frequency; D2 and D4 must not fire",
+  "submission": "From: Dana Ruiz <druiz@horizonbrokers.com>\nSubject: BOP — Juniper Lane Gifts LLC\n\nJuniper Lane Gifts LLC, gift and home-decor shop in downtown Flagstaff AZ.\n\n- BOP: BPP $95,000 (leased), GL $1M/$2M\n- Sales ~$620,000, 5 employees\n- Open since 2014\n- Loss runs, all closed:\n    2024 customer slip-and-fall, $4,200\n    2025 theft of stock, $2,900\n    2026 display shelf fell on a customer, $7,800\n\nEffective 11/20/2026. Small dollars on all three.",
+  "expected": {
+   "verdict": "Decline",
+   "rulesRequired": [
+    "D3"
+   ],
+   "rulesForbidden": [
+    "D2",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "juniper lane"
+    ],
+    "location": [
+     "flagstaff"
+    ],
+    "effectiveDate": [
+     "11/20/2026"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G09",
+  "title": "Restaurant with one open litigated claim",
+  "tests": "D2 open claim; D3 and D4 must not fire",
+  "submission": "From: Marcus Bell <mbell@keystonecommercial.com>\nSubject: BOP — Casa Brasa Grill LLC\n\nCasa Brasa Grill LLC, full-service restaurant in Glendale AZ. Beer and\nwine only, about 8% of sales.\n\n- BOP: GL $1M/$2M, BPP $160,000 (leased)\n- Sales ~$1.1M, 16 employees\n- Operating since 2018\n- One claim on the loss runs: 2025 alleged food-borne illness. Suit has\n  been filed, claim is open, reserved at $15,000.\n\nEffective 12/01/2026.",
+  "expected": {
+   "verdict": "Decline",
+   "rulesRequired": [
+    "D2"
+   ],
+   "rulesForbidden": [
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "casa brasa"
+    ],
+    "location": [
+     "glendale"
+    ],
+    "effectiveDate": [
+     "12/01/2026"
+    ],
+    "glLimits": [
+     "1m/2m"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G10",
+  "title": "Painter, two losses, one open",
+  "tests": "D2 must win over R3",
+  "submission": "From: Priya Nair <pnair@anchorrisk.com>\nSubject: GL — Redrock Painting Co LLC\n\nRedrock Painting Co LLC, residential and light-commercial painting\ncontractor, Sedona AZ.\n\n- GL only, $1M/$2M occurrence\n- Payroll ~$380,000, 7 painters\n- In business since 2016, no work above 3 stories\n- Loss runs, last three years:\n    2024 overspray on parked vehicles, $9,500 paid, closed\n    2026 ladder fell and injured a homeowner, OPEN, reserved $40,000\n\nEffective 01/15/2027.",
+  "expected": {
+   "verdict": "Decline",
+   "rulesRequired": [
+    "D2"
+   ],
+   "rulesForbidden": [
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "redrock painting"
+    ],
+    "location": [
+     "sedona"
+    ],
+    "effectiveDate": [
+     "01/15/2027"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G11",
+  "title": "Carpenter, four losses and limits not stated",
+  "tests": "Decline must win over missing information (AC-4)",
+  "submission": "From: Tom Avery <tavery@westgatebrokerage.com>\nSubject: GL — Bolt & Beam Carpentry LLC\n\nBolt & Beam Carpentry LLC, finish carpentry and cabinet installation,\nPeoria AZ. Need a GL quote, limits to be decided once we see pricing.\n\n- Payroll ~$450,000, 8 carpenters\n- In business since 2013\n- Loss runs, last three years, all closed:\n    2024 scratched flooring, $3,000\n    2024 cabinet fell from wall, $5,500\n    2025 water line nicked during install, $12,000\n    2026 damaged countertop, $8,000\n\nEffective 12/10/2026.",
+  "expected": {
+   "verdict": "Decline",
+   "rulesRequired": [
+    "D3"
+   ],
+   "rulesForbidden": [
+    "D2",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "bolt & beam",
+     "bolt and beam"
+    ],
+    "location": [
+     "peoria"
+    ],
+    "glLimits": "NOT_SPECIFIED",
+    "effectiveDate": [
+     "12/10/2026"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G12",
+  "title": "Apartments, one loss of exactly $100,000",
+  "tests": "Boundary: D4 must not fire at exactly $100k",
+  "submission": "From: Lisa Monroe <lmonroe@horizonbrokers.com>\nSubject: Package — Cedar Court Apartments LLC\n\nCedar Court Apartments LLC, 24-unit garden apartment community, Tempe AZ.\n\n- Property + GL $1M/$2M\n- Building $3,600,000, BPP $40,000, rental income $420,000\n- Owned and operated since 2012\n- Loss runs: one claim. 2025 kitchen fire in unit 11, total incurred\n  $100,000, closed. No other losses in five years.\n\nEffective 12/01/2026. Expiring with the incumbent, remarketing on price.",
+  "expected": {
+   "verdict": "In Appetite",
+   "rulesRequired": [
+    "A1"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "R3"
+   ],
+   "fields": {
+    "namedInsured": [
+     "cedar court"
+    ],
+    "location": [
+     "tempe"
+    ],
+    "effectiveDate": [
+     "12/01/2026"
+    ],
+    "glLimits": [
+     "1m/2m"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G13",
+  "title": "Office, one loss just over $100,000",
+  "tests": "D4 fires at $100,500",
+  "submission": "From: Renee Castillo <rcastillo@sonoranrisk.com>\nSubject: Package — Marlowe Billing Services Inc.\n\nMarlowe Billing Services Inc., medical billing office in Gilbert AZ.\n\n- Package: BPP $180,000 (leased) + GL $1M/$2M\n- Revenue ~$2.9M, 30 employees\n- In business since 2017\n- One claim on the loss runs: 2024 roof leak damaged equipment,\n  $100,500 paid, closed.\n\nEffective 11/30/2026.",
+  "expected": {
+   "verdict": "Decline",
+   "rulesRequired": [
+    "D4"
+   ],
+   "rulesForbidden": [
+    "D2",
+    "D3"
+   ],
+   "fields": {
+    "namedInsured": [
+     "marlowe"
+    ],
+    "location": [
+     "gilbert"
+    ],
+    "effectiveDate": [
+     "11/30/2026"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G14",
+  "title": "Law firm, property values over $10M in total",
+  "tests": "R1, needs the three values added",
+  "submission": "From: Paul Demetriou <pdemetriou@cactuscommercial.com>\nSubject: Package — Whitlock & Sayre LLP\n\nWhitlock & Sayre LLP, law firm, owns and occupies its office building in\nmidtown Phoenix AZ. 70 attorneys and staff.\n\n- Property + GL $1M/$2M\n- Building $9,500,000\n- BPP $800,000\n- Business income $1,200,000\n- Established 1994\n- No losses in the last five years, loss runs attached\n\nEffective 01/01/2027.",
+  "expected": {
+   "verdict": "Refer to Underwriter",
+   "rulesRequired": [
+    "R1"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "whitlock"
+    ],
+    "location": [
+     "phoenix"
+    ],
+    "effectiveDate": [
+     "01/01/2027"
+    ],
+    "glLimits": [
+     "1m/2m"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G15",
+  "title": "Architects, property values of exactly $10M",
+  "tests": "Boundary: R1 must not fire at exactly $10M",
+  "submission": "From: Dana Ruiz <druiz@horizonbrokers.com>\nSubject: Package — Ostrander Architecture Group Inc.\n\nOstrander Architecture Group Inc., architecture office, owns its building\nin Scottsdale AZ. 45 staff.\n\n- Property + GL $1M/$2M\n- Building $8,500,000\n- BPP $1,000,000\n- Business income $500,000\n- In business since 2003\n- No losses in the last five years, loss runs attached\n\nEffective 12/01/2026. Professional liability is placed elsewhere.",
+  "expected": {
+   "verdict": "In Appetite",
+   "rulesRequired": [
+    "A1"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "R1"
+   ],
+   "fields": {
+    "namedInsured": [
+     "ostrander"
+    ],
+    "location": [
+     "scottsdale"
+    ],
+    "effectiveDate": [
+     "12/01/2026"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G16",
+  "title": "Boutique open 15 months",
+  "tests": "R2 new venture",
+  "submission": "From: Priya Nair <pnair@anchorrisk.com>\nSubject: BOP — Thistle & Thread Boutique LLC\n\nThistle & Thread Boutique LLC, women's clothing boutique, Tucson AZ.\n\n- BOP: BPP $70,000 (leased), GL $1M/$2M\n- Sales running ~$410,000 annualized, 3 employees\n- Opened August 2025\n- No losses since opening\n\nEffective 11/15/2026.",
+  "expected": {
+   "verdict": "Refer to Underwriter",
+   "rulesRequired": [
+    "R2"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "thistle"
+    ],
+    "location": [
+     "tucson"
+    ],
+    "effectiveDate": [
+     "11/15/2026"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G17",
+  "title": "Frame shop, exactly two years in business",
+  "tests": "Boundary: R2 must not fire at exactly two years",
+  "submission": "From: Marcus Bell <mbell@keystonecommercial.com>\nSubject: BOP — Pinyon Print & Frame LLC\n\nPinyon Print & Frame LLC, custom framing and print shop, Prescott AZ.\n\n- BOP: BPP $85,000 (leased), GL $1M/$2M\n- Sales ~$380,000, 4 employees\n- Opened December 1, 2024, so two full years in business at inception\n- No losses since opening, loss runs attached\n\nEffective 12/01/2026.",
+  "expected": {
+   "verdict": "In Appetite",
+   "rulesRequired": [
+    "A1"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "R2"
+   ],
+   "fields": {
+    "namedInsured": [
+     "pinyon"
+    ],
+    "location": [
+     "prescott"
+    ],
+    "effectiveDate": [
+     "12/01/2026"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G18",
+  "title": "Plumber with two closed losses",
+  "tests": "R3; no decline rule should fire",
+  "submission": "From: Tom Avery <tavery@westgatebrokerage.com>\nSubject: GL — Agave Plumbing Services LLC\n\nAgave Plumbing Services LLC, residential service and repair plumber,\nMesa AZ.\n\n- GL only, $1M/$2M occurrence\n- Payroll ~$510,000, 8 plumbers\n- In business since 2012\n- Loss runs, last three years, both closed:\n    2024 supply line failure, $14,000\n    2025 water heater install leak, $22,000\n\nEffective 12/05/2026.",
+  "expected": {
+   "verdict": "Refer to Underwriter",
+   "rulesRequired": [
+    "R3"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "agave plumbing"
+    ],
+    "location": [
+     "mesa"
+    ],
+    "effectiveDate": [
+     "12/05/2026"
+    ],
+    "glLimits": [
+     "1m/2m"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G19",
+  "title": "Apartments, unit count not stated",
+  "tests": "R4 material gap for habitational",
+  "submission": "From: Lisa Monroe <lmonroe@horizonbrokers.com>\nSubject: Package — Sunridge Villas LLC\n\nSunridge Villas LLC, apartment community in Yuma AZ. Two-story frame\nbuildings, built 1996, roofs replaced 2021.\n\n- Property + GL $1M/$2M\n- Buildings $5,800,000, BPP $35,000, rental income $690,000\n- Owned since 2009\n- No losses in the last five years\n\nEffective 01/01/2027.",
+  "expected": {
+   "verdict": "Refer to Underwriter",
+   "rulesRequired": [
+    "R4"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "sunridge"
+    ],
+    "location": [
+     "yuma"
+    ],
+    "effectiveDate": [
+     "01/01/2027"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G20",
+  "title": "Bike shop, loss runs not yet provided",
+  "tests": "R4 material gap: loss history",
+  "submission": "From: Renee Castillo <rcastillo@sonoranrisk.com>\nSubject: BOP — Copperline Cycles LLC\n\nCopperline Cycles LLC, bicycle sales and repair shop, Tempe AZ.\n\n- BOP: BPP $130,000 (leased), GL $1M/$2M\n- Sales ~$900,000, 6 employees\n- In business since 2019\n- Loss runs have been requested from the current carrier and I will\n  forward them when they arrive.\n\nEffective 11/25/2026. Can you start on it in the meantime?",
+  "expected": {
+   "verdict": "Refer to Underwriter",
+   "rulesRequired": [
+    "R4"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "copperline"
+    ],
+    "location": [
+     "tempe"
+    ],
+    "lossSummary": "NOT_SPECIFIED",
+    "effectiveDate": [
+     "11/25/2026"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G21",
+  "title": "Consulting office, time in business not stated",
+  "tests": "R4 material gap: years in business",
+  "submission": "From: Paul Demetriou <pdemetriou@cactuscommercial.com>\nSubject: Package — Tallgrass Consulting Group LLC\n\nTallgrass Consulting Group LLC, management consulting office, Phoenix AZ.\n12 consultants.\n\n- Package: BPP $60,000 (leased) + GL $1M/$2M\n- Revenue ~$2.2M\n- Loss runs attached, no claims\n\nEffective 12/01/2026.",
+  "expected": {
+   "verdict": "Refer to Underwriter",
+   "rulesRequired": [
+    "R4"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "tallgrass"
+    ],
+    "location": [
+     "phoenix"
+    ],
+    "yearsInBusiness": "NOT_SPECIFIED",
+    "effectiveDate": [
+     "12/01/2026"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G22",
+  "title": "Daycare",
+  "tests": "R5 class outside both lists",
+  "submission": "From: Dana Ruiz <druiz@horizonbrokers.com>\nSubject: BOP — Little Saguaro Learning Center LLC\n\nLittle Saguaro Learning Center LLC, daycare and preschool licensed for\n60 children, Chandler AZ.\n\n- BOP: BPP $75,000 (leased), GL $1M/$2M\n- Revenue ~$780,000, 14 staff\n- Operating since 2015\n- No losses in the last five years, loss runs attached\n\nEffective 01/01/2027.",
+  "expected": {
+   "verdict": "Refer to Underwriter",
+   "rulesRequired": [
+    "R5"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "little saguaro"
+    ],
+    "location": [
+     "chandler"
+    ],
+    "effectiveDate": [
+     "01/01/2027"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G23",
+  "title": "Self-storage facility described by unit count",
+  "tests": "R5; must not be read as habitational",
+  "submission": "From: Marcus Bell <mbell@keystonecommercial.com>\nSubject: Package — Lockhaven Self Storage LLC\n\nLockhaven Self Storage LLC, 310-unit self-storage facility, Surprise AZ.\nGated, single-story metal buildings.\n\n- Property + GL $1M/$2M\n- Buildings $4,100,000, BPP $25,000, rental income $510,000\n- Operating since 2010\n- No losses in the last five years, loss runs attached\n\nEffective 12/15/2026.",
+  "expected": {
+   "verdict": "Refer to Underwriter",
+   "rulesRequired": [
+    "R5"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "lockhaven"
+    ],
+    "location": [
+     "surprise"
+    ],
+    "effectiveDate": [
+     "12/15/2026"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G24",
+  "title": "Apartments, 64 units",
+  "tests": "R5: habitational over 50 units is outside target",
+  "submission": "From: Priya Nair <pnair@anchorrisk.com>\nSubject: Package — Mesquite Terrace Apartments LP\n\nMesquite Terrace Apartments LP, 64-unit apartment community, Phoenix AZ.\n\n- Property + GL $1M/$2M\n- Buildings $8,200,000, BPP $60,000, rental income $900,000\n- Owned since 2006\n- No losses in the last five years, loss runs attached\n\nEffective 01/01/2027.",
+  "expected": {
+   "verdict": "Refer to Underwriter",
+   "rulesRequired": [
+    "R5"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "mesquite terrace"
+    ],
+    "location": [
+     "phoenix"
+    ],
+    "effectiveDate": [
+     "01/01/2027"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G25",
+  "title": "Apartments, exactly 50 units",
+  "tests": "Boundary: 50 units is still target",
+  "submission": "From: Tom Avery <tavery@westgatebrokerage.com>\nSubject: Package — Palo Verde Flats LLC\n\nPalo Verde Flats LLC, 50-unit apartment community, Mesa AZ.\n\n- Property + GL $1M/$2M\n- Buildings $6,400,000, BPP $50,000, rental income $780,000\n- Owned since 2014\n- No losses in the last five years, loss runs attached\n\nEffective 12/01/2026.",
+  "expected": {
+   "verdict": "In Appetite",
+   "rulesRequired": [
+    "A1"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "R5"
+   ],
+   "fields": {
+    "namedInsured": [
+     "palo verde"
+    ],
+    "location": [
+     "mesa"
+    ],
+    "effectiveDate": [
+     "12/01/2026"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G26",
+  "title": "Florist, email and loss run disagree",
+  "tests": "Contradiction treated as a material gap",
+  "submission": "From: Lisa Monroe <lmonroe@horizonbrokers.com>\nSubject: BOP — Desert Bloom Florist LLC\n\nDesert Bloom Florist LLC, retail florist, Mesa AZ.\n\n- BOP: BPP $65,000 (leased), GL $1M/$2M\n- Sales ~$540,000, 6 employees\n- In business since 2010\n- Clean loss history, no claims.\n\nEffective 11/30/2026.\n\n--- pasted from carrier loss run ---\nPolicy 2025-26 | DOL 06/14/2025 | Customer slip on wet floor | Paid $22,000 | CLOSED",
+  "expected": {
+   "verdict": "Refer to Underwriter",
+   "rulesRequired": [
+    "R4"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "desert bloom"
+    ],
+    "location": [
+     "mesa"
+    ],
+    "effectiveDate": [
+     "11/30/2026"
+    ]
+   }
+  },
+  "note": "Assumption to confirm: a submission that contradicts itself on losses is referred, because the loss history cannot be relied on."
+ },
+ {
+  "id": "G27",
+  "title": "New bakery cafe with two losses",
+  "tests": "R2 and R3 together",
+  "submission": "From: Renee Castillo <rcastillo@sonoranrisk.com>\nSubject: BOP — Kiln & Crumb Bakery Cafe LLC\n\nKiln & Crumb Bakery Cafe LLC, counter-service bakery cafe, Tempe AZ.\nNo alcohol served.\n\n- BOP: BPP $120,000 (leased), GL $1M/$2M\n- Sales running ~$700,000 annualized, 9 employees\n- Opened January 2026\n- Two claims since opening, both closed:\n    2026 customer burn from spilled coffee, $3,100\n    2026 small oven fire, $6,400\n\nEffective 11/15/2026.",
+  "expected": {
+   "verdict": "Refer to Underwriter",
+   "rulesRequired": [
+    "R2",
+    "R3"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+   ],
+   "fields": {
+    "namedInsured": [
+     "kiln & crumb",
+     "kiln and crumb"
+    ],
+    "location": [
+     "tempe"
+    ],
+    "effectiveDate": [
+     "11/15/2026"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G28",
+  "title": "Restaurant, complete and clean",
+  "tests": "A1; alcohol is stated so no gap",
+  "submission": "From: Paul Demetriou <pdemetriou@cactuscommercial.com>\nSubject: BOP — Olive & Ember Trattoria LLC\n\nOlive & Ember Trattoria LLC, full-service Italian restaurant, Scottsdale AZ.\nBeer and wine only, about 12% of sales. No delivery, no catering.\n\n- BOP: GL $1M/$2M, BPP $210,000 (leased)\n- Sales ~$1.9M, 24 employees\n- Operating since 2013\n- No losses in the last five years, loss runs attached\n\nEffective 12/01/2026.",
+  "expected": {
+   "verdict": "In Appetite",
+   "rulesRequired": [
+    "A1"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5"
+   ],
+   "fields": {
+    "namedInsured": [
+     "olive & ember",
+     "olive and ember"
+    ],
+    "location": [
+     "scottsdale"
+    ],
+    "effectiveDate": [
+     "12/01/2026"
+    ],
+    "glLimits": [
+     "1m/2m"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G29",
+  "title": "Bookstore with one old loss",
+  "tests": "A1; a 2020 loss is outside the three-year window",
+  "submission": "From: Dana Ruiz <druiz@horizonbrokers.com>\nSubject: BOP — Second Chapter Books LLC\n\nSecond Chapter Books LLC, independent bookstore, Flagstaff AZ.\n\n- BOP: BPP $150,000 (leased), GL $1M/$2M\n- Sales ~$670,000, 5 employees\n- In business since 2008\n- Loss runs: one claim, 2020 burst pipe, $9,000 paid, closed. Nothing\n  since.\n\nEffective 12/01/2026.",
+  "expected": {
+   "verdict": "In Appetite",
+   "rulesRequired": [
+    "A1"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "R3"
+   ],
+   "fields": {
+    "namedInsured": [
+     "second chapter"
+    ],
+    "location": [
+     "flagstaff"
+    ],
+    "effectiveDate": [
+     "12/01/2026"
+    ]
+   }
+  },
+  "note": ""
+ },
+ {
+  "id": "G30",
+  "title": "Electrician, three losses but only one in the window",
+  "tests": "D3 and R3 must not fire on old losses",
+  "submission": "From: Marcus Bell <mbell@keystonecommercial.com>\nSubject: GL — Brightwire Electric LLC\n\nBrightwire Electric LLC, residential and light-commercial electrician,\nGilbert AZ.\n\n- GL only, $1M/$2M occurrence\n- Payroll ~$720,000, 10 electricians\n- In business since 2009\n- Full loss history, all closed:\n    2019 damaged drywall, $11,000\n    2020 fixture fell, $6,500\n    2025 scorched panel cover, $4,800\n\nEffective 12/01/2026.",
+  "expected": {
+   "verdict": "In Appetite",
+   "rulesRequired": [
+    "A1"
+   ],
+   "rulesForbidden": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "R3"
+   ],
+   "fields": {
+    "namedInsured": [
+     "brightwire"
+    ],
+    "location": [
+     "gilbert"
+    ],
+    "effectiveDate": [
+     "12/01/2026"
+    ],
+    "glLimits": [
+     "1m/2m"
+    ]
+   }
+  },
+  "note": ""
+ }
+]

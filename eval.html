@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SubmissionIQ — Evaluation results</title>
+<meta name="description" content="Measured results from running the SubmissionIQ golden test set through a live language model.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef0f3; --surface:#ffffff; --surface-2:#f7f8fa;
+  --ink:#172033; --muted:#5a6679; --faint:#8793a3;
+  --line:#e0e4ea; --line-strong:#cdd4de;
+  --accent:#0d6e6b; --accent-ink:#0a5452;
+  --good:#1c8a4e; --good-bg:#e6f4ec;
+  --warn:#9a6a12; --warn-bg:#f7eeda;
+  --bad:#bb3b3b; --bad-bg:#f7e5e5;
+  --shadow:0 1px 2px rgba(23,32,51,.06),0 6px 18px rgba(23,32,51,.06);
+  --font:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d131f; --surface:#141c2a; --surface-2:#1a2332;
+  --ink:#e9edf3; --muted:#9aa6b8; --faint:#6f7d91;
+  --line:#243043; --line-strong:#33425a;
+  --accent:#2bb6b1; --accent-ink:#55cfc9;
+  --good:#46c07e; --good-bg:#12331f;
+  --warn:#d9a940; --warn-bg:#35290f;
+  --bad:#e06a6a; --bad-bg:#371a1a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.35);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0d131f; --surface:#141c2a; --surface-2:#1a2332;
+  --ink:#e9edf3; --muted:#9aa6b8; --faint:#6f7d91;
+  --line:#243043; --line-strong:#33425a;
+  --accent:#2bb6b1; --accent-ink:#55cfc9;
+  --good:#46c07e; --good-bg:#12331f;
+  --warn:#d9a940; --warn-bg:#35290f;
+  --bad:#e06a6a; --bad-bg:#371a1a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{text-wrap:balance;margin:0}
+a{color:var(--accent)}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:18px}
+header{background:var(--surface);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:14px;padding-block:14px}
+.brand b{font-weight:600;font-size:17px;letter-spacing:-.2px;display:block}
+.brand span{font-size:11.5px;color:var(--muted)}
+.spacer{flex:1}
+.back{font-size:13px;font-weight:500;text-decoration:none;border:1px solid var(--line-strong);border-radius:9px;padding:7px 12px;color:var(--ink);background:var(--surface-2);white-space:nowrap}
+.intro{padding-block:22px 4px}
+.intro h1{font-size:clamp(21px,3.4vw,27px);letter-spacing:-.4px}
+.intro p{color:var(--muted);max-width:70ch;margin:8px 0 0;font-size:14.5px}
+.meta{margin-top:12px;font-size:12.5px;color:var(--muted);font-family:var(--mono)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:20px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:15px 16px}
+.tile .k{font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
+.tile .v{font-size:28px;font-weight:600;letter-spacing:-.6px;margin-top:4px;font-variant-numeric:tabular-nums}
+.tile .t{font-size:12px;color:var(--muted);margin-top:2px}
+.pill{display:inline-block;font-size:11px;font-weight:600;border-radius:999px;padding:2px 9px;margin-top:8px}
+.pill.good{color:var(--good);background:var(--good-bg)}
+.pill.bad{color:var(--bad);background:var(--bad-bg)}
+.pill.warn{color:var(--warn);background:var(--warn-bg)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-top:22px;overflow:hidden}
+.card h2{font-size:15px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.card .sub{font-size:12.5px;color:var(--muted);font-weight:400;margin-left:8px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:720px}
+th{text-align:left;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:600;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--surface-2);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
+td .tests{color:var(--muted);font-size:12px}
+td .fail{color:var(--bad);font-size:12px;margin-top:4px}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.rules{font-family:var(--mono);font-size:12px}
+.state{padding:44px 18px;text-align:center;color:var(--muted)}
+.state b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+.note{font-size:13px;color:var(--muted);padding:14px 16px;max-width:80ch}
+.note p{margin:0 0 8px}
+footer{color:var(--faint);font-size:12px;padding-block:22px 34px;text-align:center}
+</style>
+</head>
+<body>
+<header><div class="wrap hrow">
+  <div class="brand"><b>SubmissionIQ</b><span>Evaluation results</span></div>
+  <div class="spacer"></div>
+  <a class="back" href="./">Back to the demo</a>
+</div></header>
+
+<div class="wrap">
+  <section class="intro">
+    <h1>How accurate is it? Measured, not claimed.</h1>
+    <p>Thirty test submissions, each with a known correct answer, are sent to a live language model with the SubmissionIQ prompt and appetite rules. Every response is scored automatically. The run happens in GitHub Actions and the results below are whatever it produced, including the failures.</p>
+    <div class="meta" id="meta"></div>
+  </section>
+
+  <div id="body"><div class="card"><div class="state"><b>Loading results…</b></div></div></div>
+
+  <div class="card">
+    <h2>How to read this</h2>
+    <div class="note">
+      <p><b>Unsafe verdicts</b> matter most: a risk returned In Appetite when the correct answer was Refer or Decline. Referring a clean risk costs an underwriter minutes; passing a bad one costs a loss.</p>
+      <p><b>Field accuracy</b> checks selected extracted fields per case against the submission. <b>Invented values</b> counts fields the model filled in when the submission did not state them.</p>
+      <p><b>Rule accuracy</b> checks that the model cited the rules it should have and none it should not. Several cases sit exactly on a threshold to test this.</p>
+      <p>Test cases, prompt and scoring code are in the <a href="https://github.com/siddharthwaghmare/submissioniq/tree/main/eval">eval folder of the repository</a>. All companies are fictional.</p>
+    </div>
+  </div>
+  <footer>SubmissionIQ · built by Siddharth Waghmare</footer>
+</div>
+
+<script>
+const RAW='https://raw.githubusercontent.com/siddharthwaghmare/submissioniq/main/eval/results/';
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function load(name){
+  for(const base of [RAW,'eval/results/']){
+    try{const r=await fetch(base+name+'?t='+Date.now(),{cache:'no-store'});if(r.ok)return await r.json();}catch(e){}
+  }
+  return null;
+}
+function fmtDate(s){const d=new Date(s);return isNaN(d)?esc(s):d.toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});}
+function tile(k,v,target,met){
+  const p=met==null?'':`<span class="pill ${met?'good':'bad'}">${met?'Target met':'Target not met'}</span>`;
+  return `<div class="tile"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div><div class="t">Target: ${esc(target)}</div>${p}</div>`;
+}
+const pc=v=>v==null?'n/a':v+'%';
+function render(run,hist){
+  const s=run.summary;
+  document.getElementById('meta').innerHTML=`Model ${esc(run.model)} · run ${fmtDate(run.runAt)} · prompt ${esc(run.promptSha)}`+(run.runUrl?` · <a href="${esc(run.runUrl)}">run log</a>`:'');
+  const tiles=[
+    tile('Verdict accuracy',pc(s.verdictAccuracy),'100%',s.verdictAccuracy===100),
+    tile('Unsafe verdicts',s.unsafeVerdicts,'0',s.unsafeVerdicts===0),
+    tile('Field accuracy',pc(s.fieldAccuracy),'95% or higher',s.fieldAccuracy>=95),
+    tile('Invented values',s.inventedValues,'0',s.inventedValues===0),
+    tile('Rule accuracy',pc(s.ruleAccuracy),'100%',s.ruleAccuracy===100),
+    tile('Contract validity',pc(s.contractValidity),'100%',s.contractValidity===100)
+  ].join('');
+  const rows=run.cases.map(c=>{
+    const ok=c.passed;
+    const fails=(c.failures||[]).map(f=>`<div class="fail">${esc(f)}</div>`).join('');
+    return `<tr><td class="id">${esc(c.id)}</td><td><b>${esc(c.title)}</b><div class="tests">${esc(c.tests)}</div>${fails}</td><td>${esc(c.expectedVerdict)}</td><td>${esc(c.verdict||'No answer')}</td><td class="rules">${esc((c.rules||[]).join(', '))}</td><td><span class="pill ${ok?'good':'bad'}" style="margin:0">${ok?'Pass':'Fail'}</span></td></tr>`;
+  }).join('');
+  const hrows=(hist||[]).slice().reverse().map(h=>`<tr><td class="num">${fmtDate(h.runAt)}</td><td class="rules">${esc(h.model)}</td><td class="rules">${esc(h.promptSha)}</td><td class="num">${h.summary.casesPassed}/${h.summary.cases}</td><td class="num">${pc(h.summary.verdictAccuracy)}</td><td class="num">${h.summary.unsafeVerdicts}</td><td class="num">${pc(h.summary.fieldAccuracy)}</td><td class="num">${pc(h.summary.ruleAccuracy)}</td></tr>`).join('');
+  document.getElementById('body').innerHTML=`<div class="tiles">${tiles}</div>
+    <div class="card"><h2>Test cases<span class="sub">${s.casesPassed} of ${s.cases} passed every check</span></h2><div class="scroll"><table><thead><tr><th>ID</th><th>Case and what it tests</th><th>Expected</th><th>Model answer</th><th>Rules cited</th><th>Result</th></tr></thead><tbody>${rows}</tbody></table></div></div>
+    ${hrows?`<div class="card"><h2>Run history<span class="sub">newest first</span></h2><div class="scroll"><table><thead><tr><th>Run</th><th>Model</th><th>Prompt</th><th>Cases passed</th><th>Verdict accuracy</th><th>Unsafe</th><th>Field accuracy</th><th>Rule accuracy</th></tr></thead><tbody>${hrows}</tbody></table></div></div>`:''}`;
+}
+(async()=>{
+  const run=await load('latest.json');
+  if(!run||!run.summary){document.getElementById('body').innerHTML='<div class="card"><div class="state"><b>No evaluation run yet</b>Results appear here after the first run completes.</div></div>';return;}
+  render(run,await load('history.json'));
+})();
+</script>
+</body>
+</html>
