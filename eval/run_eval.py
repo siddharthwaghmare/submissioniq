@@ -36,7 +36,11 @@ def call_model(model, system, user, token, use_json_mode=True):
     for attempt in range(6):
         try:
             with urllib.request.urlopen(req, timeout=120) as r:
-                return json.load(r)["choices"][0]["message"]["content"]
+                status, ctype, text = r.status, r.headers.get("Content-Type"), r.read().decode("utf-8", errors="replace")
+            try:
+                return json.loads(text)["choices"][0]["message"]["content"]
+            except Exception:
+                raise RuntimeError("unexpected response: HTTP %s, %s, body starts %r" % (status, ctype, text[:300]))
         except urllib.error.HTTPError as e:
             detail = e.read().decode(errors="replace")[:400]
             if e.code == 429 or e.code >= 500:
@@ -186,6 +190,8 @@ def main():
         row["passed"] = not row["failures"]
         rows.append(row)
         outputs[c["id"]] = o
+        if mock is None and i == 2 and all("call failed" in " ".join(r["failures"]) for r in rows):
+            sys.exit("first three model calls failed, stopping: " + rows[0]["failures"][0])
         print("%s %-4s %s" % (c["id"], "PASS" if row["passed"] else "FAIL", "; ".join(row["failures"])[:200]), flush=True)
 
     n = len(rows)
@@ -212,6 +218,8 @@ def main():
                   if os.environ.get("GITHUB_RUN_ID") else "",
         "summary": summary, "cases": rows,
     }
+    if all("call failed" in " ".join(r["failures"]) for r in rows):
+        sys.exit("every model call failed; results not written")
     out = pathlib.Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     (out / "latest.json").write_text(json.dumps(run, indent=1) + "\n", encoding="utf-8")
@@ -221,8 +229,6 @@ def main():
     hist.append({k: run[k] for k in ("runAt", "model", "promptSha", "commit", "runUrl", "summary")})
     hp.write_text(json.dumps(hist, indent=1) + "\n", encoding="utf-8")
     print(json.dumps(summary, indent=1))
-    if all("call failed" in " ".join(r["failures"]) for r in rows):
-        sys.exit("every model call failed")
 
 
 if __name__ == "__main__":
