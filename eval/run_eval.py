@@ -3,9 +3,9 @@
   python eval/run_eval.py                 live run via GitHub Models (needs GITHUB_TOKEN)
   python eval/run_eval.py --mock FILE     score saved outputs instead of calling a model
 
-Standard library only.
+Standard library only; the live call uses curl.
 """
-import argparse, datetime, hashlib, json, os, pathlib, re, sys, time, urllib.error, urllib.request
+import argparse, datetime, hashlib, json, os, pathlib, re, subprocess, sys, tempfile, time
 
 ROOT = pathlib.Path(__file__).resolve().parent
 ENDPOINT = "https://models.github.ai/inference/chat/completions"
@@ -25,34 +25,46 @@ def is_unspecified(v):
     return not str(v or "").strip() or bool(re.match(r"^\s*(not specified|n/?a|none stated|unknown)\b", str(v), re.I))
 
 
+def post(body, token):
+    """POSTs with curl, as GitHub's own Actions example does. Returns (status, headers text, body text)."""
+    with tempfile.TemporaryDirectory() as d:
+        bp, hp, op = (os.path.join(d, n) for n in ("body.json", "headers.txt", "out.txt"))
+        with open(bp, "w", encoding="utf-8") as f:
+            json.dump(body, f)
+        cmd = ["curl", "-sS", "-L", "--post301", "--post302", "--max-time", "120", "-X", "POST", ENDPOINT,
+               "-H", "Content-Type: application/json", "-H", "Accept: application/vnd.github+json",
+               "-H", "X-GitHub-Api-Version: 2022-11-28", "-H", "Authorization: Bearer " + token,
+               "--data-binary", "@" + bp, "-D", hp, "-o", op, "-w", "%{http_code} %{url_effective}"]
+        p = subprocess.run(cmd, capture_output=True, text=True)
+        if p.returncode != 0:
+            raise RuntimeError("curl failed: " + p.stderr.strip()[:300])
+        status = int(p.stdout.split()[0])
+        return status, open(hp, encoding="utf-8", errors="replace").read(), open(op, encoding="utf-8", errors="replace").read(), p.stdout
+
+
 def call_model(model, system, user, token, use_json_mode=True):
     body = {"model": model, "temperature": 0, "max_tokens": 1800,
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]}
     if use_json_mode:
         body["response_format"] = {"type": "json_object"}
-    req = urllib.request.Request(ENDPOINT, data=json.dumps(body).encode(), method="POST", headers={
-        "Authorization": "Bearer " + token, "Content-Type": "application/json",
-        "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"})
     for attempt in range(6):
-        try:
-            with urllib.request.urlopen(req, timeout=120) as r:
-                status, ctype, text = r.status, r.headers.get("Content-Type"), r.read().decode("utf-8", errors="replace")
+        status, headers, text, info = post(body, token)
+        if status == 200:
             try:
                 return json.loads(text)["choices"][0]["message"]["content"]
             except Exception:
-                raise RuntimeError("unexpected response: HTTP %s, %s, body starts %r" % (status, ctype, text[:300]))
-        except urllib.error.HTTPError as e:
-            detail = e.read().decode(errors="replace")[:400]
-            if e.code == 429 or e.code >= 500:
-                wait = int(e.headers.get("Retry-After") or 0) or 20 * (attempt + 1)
-                if wait > 300:
-                    raise RuntimeError("rate limited for %ss: %s" % (wait, detail))
-                print("  HTTP %s, waiting %ss" % (e.code, wait), flush=True)
-                time.sleep(wait)
-                continue
-            if e.code == 400 and use_json_mode and "response_format" in detail:
-                return call_model(model, system, user, token, use_json_mode=False)
-            raise RuntimeError("HTTP %s: %s" % (e.code, detail))
+                raise RuntimeError("unexpected response (%s): body starts %r" % (info, text[:300]))
+        if status == 429 or status >= 500:
+            m = re.search(r"^retry-after:\s*(\d+)", headers, re.I | re.M)
+            wait = int(m.group(1)) if m else 20 * (attempt + 1)
+            if wait > 300:
+                raise RuntimeError("rate limited for %ss: %s" % (wait, text[:300]))
+            print("  HTTP %s, waiting %ss" % (status, wait), flush=True)
+            time.sleep(wait)
+            continue
+        if status == 400 and use_json_mode and "response_format" in text:
+            return call_model(model, system, user, token, use_json_mode=False)
+        raise RuntimeError("HTTP %s (%s): %s" % (status, info, text[:300]))
     raise RuntimeError("gave up after repeated rate limits")
 
 
