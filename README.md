@@ -6,7 +6,7 @@ Paste a messy broker submission (or pick a sample) and SubmissionIQ:
 
 1. **Extracts** the structured data — named insured, class, coverages, limits, TIV/BPP, revenue, years in business, loss history.
 2. **Flags** missing or incomplete information, with a severity on each gap.
-3. **Scores** the risk against an explicit, visible underwriting **appetite ruleset** (In Appetite / Refer / Decline, with reasons).
+3. **Scores** the risk against an explicit, visible underwriting **appetite ruleset** (In Appetite / Refer to Underwriter / Decline, with reasons).
 4. **Drafts** the underwriter's response email back to the broker.
 
 **▶ Live demo:** https://YOUR-USERNAME.github.io/submissioniq/
