@@ -175,7 +175,7 @@ Then each reason maps to a row of the decision table.
 
 ## 8. Evaluation
 
-The hosted demo replays pre-generated analyses, so accuracy is measured separately. A golden set of 30 submissions is run through a live model in GitHub Actions, scored automatically, and published at [eval.html](https://siddharthwaghmare.github.io/submissioniq/eval.html).
+The hosted demo replays pre-generated analyses, so accuracy is measured separately. A golden set of 30 submissions is run through a live model in GitHub Actions, scored automatically, and published at [eval.html](https://siddharthwaghmare.github.io/submissioniq/eval.html) once a run completes. No run has completed yet.
 
 | Part | Location |
 |---|---|

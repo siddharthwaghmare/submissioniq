@@ -7,13 +7,6 @@ on:
       model:
         description: GitHub Models model ID
         default: openai/gpt-4o-mini
-  push:
-    branches: [main]
-    paths:
-      - eval/golden_set.json
-      - eval/prompt.md
-      - eval/run_eval.py
-      - .github/workflows/eval.yml
 
 permissions:
   contents: write
